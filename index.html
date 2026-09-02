@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f5f7">
+  <title>12345的训练计划</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface-soft: #f7f7f9;
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+      --line: #d9d9de;
+      --green: #0071e3;
+      --green-deep: #0058b0;
+      --green-soft: #edf6ff;
+      --blue-soft: #f0f5ff;
+      --orange-soft: #fff7ed;
+      --amber: #9a6700;
+      --red: #c9342f;
+      --shadow: 0 18px 60px rgba(0, 0, 0, .07);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.5;
+    }
+    button { font: inherit; }
+    .page {
+      width: min(100% - 32px, 980px);
+      margin: 0 auto;
+      padding: 34px 0 46px;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px 30px;
+      color: var(--ink);
+      background: radial-gradient(circle at 92% 5%, rgba(0,113,227,.16), transparent 34%), linear-gradient(180deg,#fff 0%,#f6f6f8 100%);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -64px;
+      top: -95px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.72);
+      filter: blur(3px);
+    }
+    .eyebrow {
+      margin: 0 0 9px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .78;
+    }
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(29px, 5vw, 46px);
+      line-height: 1.12;
+      letter-spacing: -.04em;
+    }
+    .hero-sub {
+      position: relative;
+      z-index: 1;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .metrics {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .metric {
+      padding: 13px 14px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+    }
+    .metric span { display: block; font-size: 11px; opacity: .72; }
+    .metric strong { display: block; margin-top: 3px; font-size: 18px; }
+    .plan-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 18px 0;
+      padding: 5px;
+      background: #e8e8ed;
+      border-radius: 15px;
+    }
+    .plan-switch button {
+      min-height: 48px;
+      padding: 10px 14px;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .plan-switch button[aria-selected="true"] {
+      color: var(--ink);
+      background: var(--surface);
+      box-shadow: 0 2px 9px rgba(0,0,0,.08);
+    }
+    .panel[hidden] { display: none; }
+    .section {
+      margin-top: 14px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid rgba(0,0,0,.07);
+      border-radius: 22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.035);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    h2 { margin: 0; font-size: 20px; letter-spacing: -.02em; }
+    .hint { color: var(--muted); font-size: 12px; }
+    .goal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .goal {
+      padding: 14px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+    .goal span { display: block; color: var(--muted); font-size: 12px; }
+    .goal strong { display: block; margin-top: 3px; color: var(--green); font-size: 19px; }
+    .weeks {
+      display: grid;
+      grid-template-columns: repeat(13, minmax(44px, 1fr));
+      gap: 6px;
+    }
+    .week {
+      min-height: 67px;
+      padding: 8px 5px;
+      color: var(--ink);
+      border: 1px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .week strong, .week span { display: block; }
+    .week strong { font-size: 13px; }
+    .week span { margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .tone-green { background: var(--green-soft); }
+    .tone-blue { background: var(--blue-soft); }
+    .tone-orange { background: var(--orange-soft); }
+    .week[aria-pressed="true"] {
+      border-color: var(--green);
+      box-shadow: inset 0 0 0 1px var(--green);
+    }
+    .phase-detail {
+      display: grid;
+      grid-template-columns: 6px minmax(0, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .phase-rail {
+      background: var(--green);
+      border-radius: 99px;
+    }
+    .phase-copy {
+      padding: 17px 18px;
+      background: var(--surface-soft);
+      border-radius: 15px;
+    }
+    .phase-copy h3 { margin: 0; font-size: 17px; }
+    .phase-copy > p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .phase-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .phase-points strong, .phase-points span { display: block; }
+    .phase-points strong { font-size: 12px; }
+    .phase-points span { margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .schedule { border-top: 1px solid var(--line); }
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 62px 120px 1fr 54px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 2px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    .schedule-row:last-child { border-bottom: 0; }
+    .schedule-row .day-name { font-weight: 700; }
+    .schedule-row .main { font-weight: 600; }
+    .schedule-row .content { color: var(--muted); }
+    .load {
+      justify-self: end;
+      padding: 3px 8px;
+      color: var(--green-deep);
+      background: var(--green-soft);
+      border-radius: 999px;
+      font-size: 11px;
+    }
+    .load.rest { color: var(--muted); background: #efeff1; }
+    .gate {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      padding: 13px 15px;
+      color: var(--ink);
+      background: #f5f5f7;
+      border-left: 3px solid var(--green);
+      border-radius: 6px 14px 14px 6px;
+      font-size: 13px;
+    }
+    .gate-dot {
+      display: none;
+    }
+    .training-days {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 13px;
+    }
+    .training-day {
+      min-height: 105px;
+      padding: 13px;
+      color: var(--ink);
+      text-align: left;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      cursor: pointer;
+    }
+    .training-day[aria-pressed="true"] {
+      color: var(--ink);
+      background: var(--green-soft);
+      border-color: rgba(0,113,227,.5);
+      box-shadow: inset 0 0 0 1px rgba(0,113,227,.18);
+    }
+    .training-day span, .training-day strong { display: block; }
+    .training-day .dow { color: var(--muted); font-size: 11px; }
+    .training-day strong { margin: 7px 0; font-size: 15px; }
+    .intensity { color: var(--green); font-size: 12px; }
+    .session {
+      margin-top: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .session-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 16px;
+      background: #f5f5f7;
+      border-bottom: 1px solid var(--line);
+    }
+    .session-head h3 { margin: 0; font-size: 17px; }
+    .session-head span { color: var(--green); font-size: 12px; font-weight: 700; }
+    .session-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      background: #fbfbfd;
+      border-bottom: 1px solid var(--line);
+    }
+    .session-meta > div { padding: 12px 16px; border-right: 1px solid var(--line); }
+    .session-meta > div:last-child { border-right: 0; }
+    .session-meta span, .session-meta strong { display: block; }
+    .session-meta span { color: var(--muted); font-size: 11px; }
+    .session-meta strong { margin-top: 2px; font-size: 12px; font-weight: 650; }
+    .session-row {
+      display: grid;
+      grid-template-columns: 115px 1fr 1.25fr;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    .session-row:last-child { border-bottom: 0; }
+    .session-row strong { font-size: 13px; }
+    .session-row .dose { font-weight: 700; }
+    .session-row .rule { color: var(--muted); }
+    .micro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .micro {
+      padding: 13px 14px;
+      background: var(--surface-soft);
+      border-radius: 14px;
+    }
+    .micro h3 { margin: 0 0 7px; font-size: 13px; }
+    .micro p { margin: 3px 0; color: var(--muted); font-size: 12px; }
+    .micro b { color: var(--ink); }
+    .signals { display: flex; flex-wrap: wrap; gap: 8px 13px; }
+    .signal { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); font-size: 12px; }
+    .signal i { display: none; }
+    .signal + .signal::before { content: "·"; margin-right: 8px; color: #b4b4b8; }
+    .signal.warn { color: var(--amber); }
+    .signal.stop { color: var(--red); }
+    .progression { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; }
+    .progression-head, .progression-row {
+      display: grid;
+      grid-template-columns: 76px 98px 1fr 1.25fr;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 15px;
+    }
+    .progression-head { color: var(--muted); background: #f5f5f7; border-bottom: 1px solid var(--line); font-size: 11px; font-weight: 650; }
+    .progression-row { border-bottom: 1px solid var(--line); font-size: 12px; }
+    .progression-row:last-child { border-bottom: 0; }
+    .progression-row > span:nth-child(n+3) { color: var(--muted); }
+    .footnote {
+      margin: 16px 2px 0;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+    button:focus-visible { outline: 3px solid rgba(0,113,227,.25); outline-offset: 2px; }
+    @media (max-width: 760px) {
+      .weeks { grid-template-columns: repeat(5, minmax(50px, 1fr)); }
+      .phase-points { grid-template-columns: 1fr; gap: 8px; }
+      .schedule-row { grid-template-columns: 54px 105px 1fr; }
+      .schedule-row .load { grid-column: 2 / 3; justify-self: start; }
+    }
+    @media (max-width: 560px) {
+      .page { width: min(100% - 20px, 980px); padding: 10px 0 28px; }
+      .hero { padding: 23px 20px; border-radius: 20px; }
+      .metrics { grid-template-columns: 1fr; gap: 7px; }
+      .metric { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; }
+      .metric strong { margin-top: 0; font-size: 16px; }
+      .plan-switch { position: sticky; top: 6px; z-index: 10; }
+      .plan-switch button { padding: 9px 6px; font-size: 13px; }
+      .section { padding: 17px 14px; border-radius: 17px; }
+      .section-head { display: block; }
+      .section-head .hint { display: block; margin-top: 3px; }
+      .goal-grid { grid-template-columns: 1fr; gap: 7px; }
+      .goal { display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; }
+      .goal strong { margin-top: 0; font-size: 17px; }
+      .weeks { grid-template-columns: repeat(4, minmax(52px, 1fr)); }
+      .phase-copy { padding: 14px; }
+      .schedule-row { grid-template-columns: 46px 1fr auto; gap: 7px 9px; }
+      .schedule-row .main { grid-column: 2 / 3; }
+      .schedule-row .content { grid-column: 2 / 4; }
+      .schedule-row .load { grid-column: 3 / 4; grid-row: 1 / 2; justify-self: end; }
+      .training-days { grid-template-columns: 1fr 1fr; }
+      .training-day { min-height: 94px; }
+      .session-row { grid-template-columns: 92px 1fr; padding: 11px 13px; }
+      .session-row .rule { grid-column: 1 / -1; padding-left: 104px; margin-top: -5px; }
+      .session-meta { grid-template-columns: 1fr; }
+      .session-meta > div { padding: 9px 13px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .session-meta > div:last-child { border-bottom: 0; }
+      .micro-grid { grid-template-columns: 1fr; }
+      .progression-head { display: none; }
+      .progression-row { grid-template-columns: 64px 1fr; gap: 4px 10px; padding: 13px; }
+      .progression-row > span:nth-child(n+3) { grid-column: 1 / -1; padding-left: 74px; }
+    }
+    @media (max-width: 360px) {
+      .weeks { grid-template-columns: repeat(3, minmax(56px, 1fr)); }
+      .session-row .rule { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Climbing Training Plan</p>
+      <h1>12345的训练计划</h1>
+      <p class="hero-sub">攀岩定线员备考 · 13周周期计划 · 四天高强度计划</p>
+      <div class="metrics" aria-label="目标">
+        <div class="metric"><span>难度目标</span><strong>5.13c/d · 10分钟</strong></div>
+        <div class="metric"><span>抱石目标</span><strong>V5–V7</strong></div>
+        <div class="metric"><span>考试时间</span><strong>12月初</strong></div>
+      </div>
+    </header>
+
+    <nav class="plan-switch" role="tablist" aria-label="训练方案">
+      <button type="button" role="tab" id="tab-period" aria-controls="plan-period" aria-selected="true" data-plan="period">13周周期版</button>
+      <button type="button" role="tab" id="tab-intensive" aria-controls="plan-intensive" aria-selected="false" data-plan="intensive">四天高强度版</button>
+    </nav>
+
+    <section class="panel" id="plan-period" role="tabpanel" aria-labelledby="tab-period">
+      <div class="section">
+        <div class="section-head"><h2>训练目标</h2><span class="hint">力量 → 转化 → 考试表现</span></div>
+        <div class="goal-grid">
+          <div class="goal"><span>难度专项</span><strong>5.13c/d</strong></div>
+          <div class="goal"><span>抱石专项</span><strong>V5–V7</strong></div>
+          <div class="goal"><span>核心能力</span><strong>指力＋耐力</strong></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>13周训练时间轴</h2><span class="hint">点击周数查看阶段内容</span></div>
+        <div class="weeks" role="group" aria-label="选择训练周">
+          <button class="week tone-green" type="button" data-week="1" aria-pressed="true"><strong>W1</strong><span>基础</span></button>
+          <button class="week tone-green" type="button" data-week="2" aria-pressed="false"><strong>W2</strong><span>基础</span></button>
+          <button class="week tone-green" type="button" data-week="3" aria-pressed="false"><strong>W3</strong><span>基础</span></button>
+          <button class="week tone-orange" type="button" data-week="4" aria-pressed="false"><strong>W4</strong><span>减量</span></button>
+          <button class="week tone-blue" type="button" data-week="5" aria-pressed="false"><strong>W5</strong><span>转化</span></button>
+          <button class="week tone-blue" type="button" data-week="6" aria-pressed="false"><strong>W6</strong><span>转化</span></button>
+          <button class="week tone-blue" type="button" data-week="7" aria-pressed="false"><strong>W7</strong><span>转化</span></button>
+          <button class="week tone-orange" type="button" data-week="8" aria-pressed="false"><strong>W8</strong><span>减量</span></button>
+          <button class="week tone-green" type="button" data-week="9" aria-pressed="false"><strong>W9</strong><span>专项</span></button>
+          <button class="week tone-green" type="button" data-week="10" aria-pressed="false"><strong>W10</strong><span>专项</span></button>
+          <button class="week tone-green" type="button" data-week="11" aria-pressed="false"><strong>W11</strong><span>专项</span></button>
+          <button class="week tone-orange" type="button" data-week="12" aria-pressed="false"><strong>W12</strong><span>模拟</span></button>
+          <button class="week tone-orange" type="button" data-week="13" aria-pressed="false"><strong>W13</strong><span>减量</span></button>
+        </div>
+        <div class="phase-detail" aria-live="polite">
+          <span class="phase-rail" id="phase-rail"></span>
+          <div class="phase-copy">
+            <h3 id="phase-title">第1–3周 · 最大力量基础</h3>
+            <p id="phase-summary">先提高峰值指力和高难动作上限，再向线路能力转化。</p>
+            <div class="phase-points">
+              <div><strong>指力</strong><span id="phase-finger">每周2次最大悬挂：18–20 mm，5×10秒</span></div>
+              <div><strong>攀爬</strong><span id="phase-climb">V6–V8短片段；拆解5.12a–c线路</span></div>
+              <div><strong>阶段检查</strong><span id="phase-check">动作质量稳定，训练后无局部疼痛</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>标准训练周</h2><span class="hint">4个训练日＋周日可选恢复</span></div>
+        <div class="schedule">
+          <div class="schedule-row"><span class="day-name">周一</span><span class="main">最大力量</span><span class="content">最大悬挂＋负重引体＋极限抱石</span><span class="load">高</span></div>
+          <div class="schedule-row"><span class="day-name">周二</span><span class="main">技术容量</span><span class="content">轻松线路＋静音脚、读线、身体位置</span><span class="load">低–中</span></div>
+          <div class="schedule-row"><span class="day-name">周三</span><span class="main">恢复</span><span class="content">完全休息</span><span class="load rest">休息</span></div>
+          <div class="schedule-row"><span class="day-name">周四</span><span class="main">第二力量日</span><span class="content">指力＋爆发/锁定＋考试型抱石</span><span class="load">高</span></div>
+          <div class="schedule-row"><span class="day-name">周五</span><span class="main">恢复</span><span class="content">完全休息或轻量拮抗肌</span><span class="load rest">休息</span></div>
+          <div class="schedule-row"><span class="day-name">周六</span><span class="main">难度专项</span><span class="content">高难线路拆解＋力量耐力＋10分钟模拟</span><span class="load">高</span></div>
+          <div class="schedule-row"><span class="day-name">周日</span><span class="main">可选恢复</span><span class="content">30–40分钟轻松攀爬或直接休息</span><span class="load rest">低</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="plan-intensive" role="tabpanel" aria-labelledby="tab-intensive" hidden>
+      <div class="section">
+        <div class="gate"><span class="gate-dot"></span><span><strong>手指状态准入：</strong>当前疼痛≤1/10，且训练后第二天无加重；否则取消负重指板和极限小点。</span></div>
+        <div class="training-days" role="group" aria-label="选择训练日">
+          <button class="training-day" type="button" data-day="mon" aria-pressed="true"><span class="dow">周一</span><strong>最大力量</strong><span class="intensity">强度 95%</span></button>
+          <button class="training-day" type="button" data-day="wed" aria-pressed="false"><span class="dow">周三</span><strong>力量耐力</strong><span class="intensity">强度 88%</span></button>
+          <button class="training-day" type="button" data-day="fri" aria-pressed="false"><span class="dow">周五</span><strong>爆发 · 抱石</strong><span class="intensity">强度 92%</span></button>
+          <button class="training-day" type="button" data-day="sun" aria-pressed="false"><span class="dow">周日</span><strong>5.13 模拟</strong><span class="intensity">强度 85%</span></button>
+        </div>
+
+        <div class="session" aria-live="polite">
+          <div class="session-head"><h3 id="session-title">周一 · 最大力量</h3><span id="session-tag">核心日</span></div>
+          <div class="session-meta">
+            <div><span>预计时长</span><strong id="session-duration">110–130分钟</strong></div>
+            <div><span>本日目标</span><strong id="session-target">峰值指力＋拉力</strong></div>
+            <div><span>停止条件</span><strong id="session-stop">连续2次动作质量下降</strong></div>
+          </div>
+          <div id="session-rows"></div>
+        </div>
+
+        <div class="micro-grid">
+          <div class="micro">
+            <h3>加量规则</h3>
+            <p><b>指板：</b>全部完成且次日无反应 → 下周+1.25–2.5 kg</p>
+            <p><b>引体：</b>5×3标准完成 → 下周+2.5 kg</p>
+          </div>
+          <div class="micro">
+            <h3>手指状态</h3>
+            <div class="signals">
+              <span class="signal ok"><i></i>0–1 正常</span>
+              <span class="signal warn"><i></i>2 减量</span>
+              <span class="signal stop"><i></i>≥3 / 锐痛 停止</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>13周强度进阶</h2><span class="hint">四天框架不变，训练内容随阶段切换</span></div>
+        <div class="progression" role="table" aria-label="四天高强度版13周进阶">
+          <div class="progression-head" role="row"><span>周数</span><span>阶段</span><span>指力与上肢</span><span>攀爬与考试</span></div>
+          <div class="progression-row" role="row"><strong>W1–3</strong><span>力量建立</span><span>最大悬挂2次；引体保持RPE 8–9</span><span>V6–V8短片段＋5.12b/c拆解</span></div>
+          <div class="progression-row" role="row"><strong>W4</strong><span>减量测试</span><span>总组数减少约40%，不做到脱手</span><span>记录20 mm、引体与10分钟模拟基线</span></div>
+          <div class="progression-row" role="row"><strong>W5–7</strong><span>力量转化</span><span>1次最大悬挂＋1次7:3间歇</span><span>V6稳定、尝试V7；线路推进至5.13a</span></div>
+          <div class="progression-row" role="row"><strong>W8</strong><span>第二次测试</span><span>保持强度、组数减半</span><span>10分钟内完成5.13a/b计划性take</span></div>
+          <div class="progression-row" role="row"><strong>W9–11</strong><span>考试专项</span><span>每周只保留1次低量最大力量</span><span>5.13c/d限时模拟＋V5–V7每题4分钟</span></div>
+          <div class="progression-row" role="row"><strong>W12–13</strong><span>高峰减量</span><span>W12整套模拟；W13总量降50%–60%</span><span>最后72小时不做极限指力或力竭训练</span></div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footnote">训练计划用于备考安排，不替代手指伤病的医学诊断与康复建议。</p>
+  </main>
+
+  <script>
+    (() => {
+      const planTabs = document.querySelectorAll('[data-plan]');
+      const panels = {
+        period: document.getElementById('plan-period'),
+        intensive: document.getElementById('plan-intensive')
+      };
+      planTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          planTabs.forEach(other => other.setAttribute('aria-selected', String(other === tab)));
+          Object.entries(panels).forEach(([key, panel]) => { panel.hidden = key !== tab.dataset.plan; });
+        });
+      });
+
+      const phaseEls = {
+        title: document.getElementById('phase-title'),
+        summary: document.getElementById('phase-summary'),
+        finger: document.getElementById('phase-finger'),
+        climb: document.getElementById('phase-climb'),
+        check: document.getElementById('phase-check'),
+        rail: document.getElementById('phase-rail')
+      };
+      const phases = {
+        base: { color: 'var(--green)', title: '第1–3周 · 最大力量基础', summary: '先提高峰值指力和高难动作上限，再向线路能力转化。', finger: '每周2次最大悬挂：18–20 mm，5×10秒', climb: 'V6–V8短片段；拆解5.12a–c线路', check: '动作质量稳定，训练后无局部疼痛' },
+        deload1: { color: 'var(--amber)', title: '第4周 · 减量与第一次测试', summary: '训练量下降约40%，保留动作速度，完成第一次限时模拟。', finger: '组数减半；不测试到脱手', climb: '完成5.12b/c全部单步；测试V6动作', check: '记录20 mm悬挂、负重引体和10分钟模拟' },
+        convert: { color: '#4c8295', title: '第5–7周 · 力量转化', summary: '把最大力量转化为连续输出和陌生动作解决能力。', finger: '第5–6周最大悬挂；第7周起一强一耐', climb: 'V6稳定、解决V7；分段完成5.12c–5.13a', check: '高难动作尝试次数下降，线路恢复速度提高' },
+        deload2: { color: 'var(--amber)', title: '第8周 · 减量与第二次测试', summary: '减少疲劳，检查训练是否已经转化为考试表现。', finger: '组数减半；保持中高强度', climb: '5.13a/b在10分钟内通过计划性take完成', check: '若单步仍反复失败，优先修正动作而非加量' },
+        specific: { color: 'var(--green)', title: '第9–11周 · 考试专项', summary: '训练环境、计时和决策方式尽量接近实际考试。', finger: '每周1次最大悬挂＋1次7:3间歇悬挂', climb: '5.13c/d限时模拟；V5–V7每题4分钟', check: '10分钟内完成全线，减少重复失败和无效take' },
+        peak: { color: 'var(--amber)', title: '第12周 · 高峰模拟', summary: '不再追求训练量，只验证能否稳定达到合格标准。', finger: '只做一次低量维持，不产生残余疲劳', climb: '完成难度＋抱石整套考试模拟', check: '一周内至少两次模拟达到合格线' },
+        taper: { color: 'var(--amber)', title: '第13周 · 考前减量', summary: '让手指和神经系统恢复到新鲜状态。', finger: '总量下降50%–60%；不测试极限', climb: '短而快的动作激活，不练到泵', check: '睡眠正常、手指无痛、热身后动作轻快' }
+      };
+      const phaseForWeek = week => week <= 3 ? 'base' : week === 4 ? 'deload1' : week <= 7 ? 'convert' : week === 8 ? 'deload2' : week <= 11 ? 'specific' : week === 12 ? 'peak' : 'taper';
+      const renderPhase = key => {
+        const phase = phases[key];
+        phaseEls.title.textContent = phase.title;
+        phaseEls.summary.textContent = phase.summary;
+        phaseEls.finger.textContent = phase.finger;
+        phaseEls.climb.textContent = phase.climb;
+        phaseEls.check.textContent = phase.check;
+        phaseEls.rail.style.background = phase.color;
+      };
+      document.querySelectorAll('[data-week]').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('[data-week]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+          renderPhase(phaseForWeek(Number(button.dataset.week)));
+        });
+      });
+
+      const sessions = {
+        mon: { title: '周一 · 最大力量', tag: '核心日', duration: '110–130分钟', target: '峰值指力＋拉力', stop: '连续2次动作质量下降', rows: [['专项热身','20–25分钟','肩胛激活＋递增悬挂3–4组＋V2–V4热身'],['20 mm 半扣','5 × 10秒','组间3分钟 · RPE 8.5–9 · 保持开放半扣'],['极限抱石','4个短片段 · 每题3–5次','V6–V8 · 尝试间休3–5分钟'],['负重引体','5 × 3 · RPE 8–9','按当日能力选重量 · 组间3–4分钟'],['单臂锁定','90° / 120° · 3 × 5秒/侧','肩胛稳定 · 不耸肩、不借摆动'],['拮抗与收操','2–3组','俯卧撑、外旋、伸指，低强度结束']] },
+        wed: { title: '周三 · 力量耐力', tag: '转化日', duration: '110–140分钟', target: '连续输出＋动作效率', stop: '动作变形或前臂无法恢复', rows: [['线路热身','20–25分钟','3–4条递增线路，最后一条约5.11a'],['难度拆解','2条 5.12b–5.13a','单个难点最多4次尝试 · 记录手脚序'],['线路间歇','2条连续 × 3轮','5.10d–5.11b · 轮间休8分钟'],['替代方案','抱石4×4 · 3–4轮','V3–V5 · 与线路间歇二选一'],['技术约束','每轮选1项','静音脚、直臂移动或髋部贴墙'],['动作复盘','5–10分钟','记录失败原因、恢复点和下一次策略']] },
+        fri: { title: '周五 · 爆发与抱石', tag: '专项日', duration: '100–125分钟', target: '速度力量＋限时解题', stop: '爆发速度明显下降', rows: [['专项热身','20分钟','肩胛激活＋递增悬挂＋3道递增抱石'],['指力','前6周 4 × 10秒','第7周后改为 7:3 × 6次 × 3组'],['爆发引体','5 × 3','胸口快速接近杠 · 组间3分钟'],['辅助单臂','3 × 3/侧','控制肩胛 · 不借摆动 · 左右同量'],['考试抱石','V5–V7 · 共4道','每道4分钟 · 题间休4分钟 · 首次先读线'],['低强度收操','10分钟','轻松攀爬或弹力带外旋，不再追加极限尝试']] },
+        sun: { title: '周日 · 5.13 模拟', tag: '考试日', duration: '120–150分钟', target: '读线＋take决策＋限时完攀', stop: '完成1次高质量模拟即收', rows: [['线路热身','25–30分钟','由5.9递增到5.11c，最后休息8–10分钟'],['线路拆解','5.12d–5.13d · 30–40分钟','解决全部单步并确定手脚序与休息点'],['完整恢复','15–20分钟','补水 · 复盘 · 确定主动take点'],['限时模拟','完整线路 · 10分钟','计时不中断 · take控制15–30秒'],['模拟复盘','10分钟','记录耗时、失败点、take次数与无效动作'],['可选追加','V5–V6 · 2道','仅状态良好且手指无反应时完成']] }
+      };
+      const sessionTitle = document.getElementById('session-title');
+      const sessionTag = document.getElementById('session-tag');
+      const sessionDuration = document.getElementById('session-duration');
+      const sessionTarget = document.getElementById('session-target');
+      const sessionStop = document.getElementById('session-stop');
+      const sessionRows = document.getElementById('session-rows');
+      const renderSession = key => {
+        const session = sessions[key];
+        sessionTitle.textContent = session.title;
+        sessionTag.textContent = session.tag;
+        sessionDuration.textContent = session.duration;
+        sessionTarget.textContent = session.target;
+        sessionStop.textContent = session.stop;
+        sessionRows.replaceChildren(...session.rows.map(([name, dose, rule]) => {
+          const row = document.createElement('div');
+          row.className = 'session-row';
+          const a = document.createElement('strong');
+          const b = document.createElement('div');
+          const c = document.createElement('div');
+          a.textContent = name;
+          b.className = 'dose'; b.textContent = dose;
+          c.className = 'rule'; c.textContent = rule;
+          row.append(a, b, c);
+          return row;
+        }));
+      };
+      document.querySelectorAll('[data-day]').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('[data-day]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+          renderSession(button.dataset.day);
+        });
+      });
+      renderPhase('base');
+      renderSession('mon');
+    })();
+  </script>
+</body>
+</html>
