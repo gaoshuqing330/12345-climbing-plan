@@ -1,0 +1,293 @@
+<div id="training-plan-concept">
+  <style>
+    #training-plan-concept {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 20px;
+      color-scheme: light dark;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif;
+    }
+    #training-plan-concept * { box-sizing: border-box; }
+    #training-plan-concept .training-phone {
+      width: min(100%, 430px);
+      overflow: hidden;
+      color: light-dark(#1d1d1f, #f5f5f7);
+      background: light-dark(#f3f3f1, #141414);
+      border: 1px solid light-dark(rgba(0,0,0,.09), rgba(255,255,255,.12));
+      border-radius: 28px;
+      box-shadow: 0 22px 70px light-dark(rgba(0,0,0,.12), rgba(0,0,0,.45));
+    }
+    #training-plan-concept .training-top {
+      position: relative;
+      min-height: 206px;
+      padding: 26px 24px 24px;
+      color: light-dark(#ffffff, #f5f5f7);
+      background: light-dark(#202124, #090909);
+    }
+    #training-plan-concept .training-top::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      bottom: -70px;
+      width: 200px;
+      height: 200px;
+      border: 30px solid light-dark(rgba(41,121,255,.28), rgba(88,144,255,.35));
+      border-radius: 50%;
+    }
+    #training-plan-concept .training-brand,
+    #training-plan-concept .training-kicker {
+      margin: 0;
+      color: light-dark(rgba(255,255,255,.62), rgba(245,245,247,.62));
+      font-size: calc(var(--font-size-base) * .72);
+      font-weight: 500;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    #training-plan-concept .training-topline {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-top: 22px;
+    }
+    #training-plan-concept .training-top h1 {
+      margin: 0;
+      font-size: calc(var(--font-size-base) * 2.15);
+      font-weight: 500;
+      letter-spacing: -.04em;
+    }
+    #training-plan-concept .training-top p:last-child {
+      margin: 5px 0 0;
+      color: light-dark(rgba(255,255,255,.68), rgba(245,245,247,.68));
+    }
+    #training-plan-concept .training-weekmark {
+      min-width: 54px;
+      padding: 9px 10px;
+      text-align: center;
+      color: light-dark(#dbe7ff, #dce8ff);
+      background: light-dark(rgba(41,121,255,.24), rgba(88,144,255,.24));
+      border-radius: 12px;
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+    #training-plan-concept .training-body { padding: 18px 16px 22px; }
+    #training-plan-concept .training-today {
+      position: relative;
+      margin-top: -42px;
+      padding: 19px 18px 17px 22px;
+      color: light-dark(#1d1d1f, #f5f5f7);
+      background: light-dark(#ffffff, #222222);
+      border-radius: 20px;
+      box-shadow: 0 12px 36px light-dark(rgba(0,0,0,.12), rgba(0,0,0,.30));
+    }
+    #training-plan-concept .training-today::before {
+      content: "";
+      position: absolute;
+      inset: 18px auto 18px 0;
+      width: 4px;
+      background: light-dark(#2979ff, #5890ff);
+      border-radius: 0 4px 4px 0;
+    }
+    #training-plan-concept .training-today h2 {
+      margin: 6px 0 3px;
+      font-size: calc(var(--font-size-base) * 1.55);
+      font-weight: 500;
+      letter-spacing: -.025em;
+    }
+    #training-plan-concept .training-today-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 14px;
+    }
+    #training-plan-concept .training-today-copy p { margin: 0; color: light-dark(#6e6e73, #a9a9ae); }
+    #training-plan-concept .training-duration {
+      white-space: nowrap;
+      color: light-dark(#2979ff, #75a4ff);
+      font-weight: 500;
+    }
+    #training-plan-concept .training-days {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin: 14px 0 22px;
+    }
+    #training-plan-concept .training-day {
+      padding: 11px 5px;
+      text-align: center;
+      color: light-dark(#737378, #a0a0a5);
+      border-bottom: 2px solid transparent;
+    }
+    #training-plan-concept .training-day strong,
+    #training-plan-concept .training-day span { display: block; }
+    #training-plan-concept .training-day strong { font-weight: 500; }
+    #training-plan-concept .training-day span {
+      margin-top: 3px;
+      font-size: calc(var(--font-size-base) * .72);
+    }
+    #training-plan-concept .training-day.training-current {
+      color: light-dark(#1d1d1f, #f5f5f7);
+      border-bottom-color: light-dark(#2979ff, #5890ff);
+    }
+    #training-plan-concept .training-section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin: 0 2px 10px;
+    }
+    #training-plan-concept .training-section-title h2 {
+      margin: 0;
+      font-size: calc(var(--font-size-base) * 1.15);
+      font-weight: 500;
+    }
+    #training-plan-concept .training-section-title span {
+      color: light-dark(#77777c, #9f9fa4);
+      font-size: calc(var(--font-size-base) * .76);
+    }
+    #training-plan-concept .training-session {
+      overflow: hidden;
+      background: light-dark(#ffffff, #222222);
+      border-radius: 18px;
+    }
+    #training-plan-concept .training-step {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+      padding: 15px 14px;
+      border-bottom: 1px solid light-dark(#e6e6e3, #343434);
+    }
+    #training-plan-concept .training-step:last-child { border-bottom: 0; }
+    #training-plan-concept .training-step-number {
+      color: light-dark(#2979ff, #75a4ff);
+      font-weight: 500;
+    }
+    #training-plan-concept .training-step-name {
+      display: block;
+      font-weight: 500;
+    }
+    #training-plan-concept .training-step-note {
+      display: block;
+      margin-top: 3px;
+      color: light-dark(#747479, #aaaab0);
+      font-size: calc(var(--font-size-base) * .78);
+    }
+    #training-plan-concept .training-dose {
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    #training-plan-concept .training-week-focus { margin-top: 24px; }
+    #training-plan-concept .training-focus-row {
+      display: grid;
+      grid-template-columns: 66px 1fr;
+      gap: 12px;
+      padding: 10px 2px;
+      border-bottom: 1px solid light-dark(#dededb, #303030);
+    }
+    #training-plan-concept .training-focus-row:last-child { border-bottom: 0; }
+    #training-plan-concept .training-focus-row span { color: light-dark(#77777c, #9f9fa4); }
+    #training-plan-concept .training-focus-row strong { font-weight: 500; }
+    #training-plan-concept .training-cycle { margin-top: 24px; }
+    #training-plan-concept .training-cycle-track {
+      display: grid;
+      grid-template-columns: 3fr 1fr 3fr 1fr 3fr 2fr;
+      gap: 3px;
+      height: 8px;
+      margin-top: 13px;
+    }
+    #training-plan-concept .training-cycle-track span {
+      display: block;
+      background: light-dark(#d8d8d5, #333333);
+      border-radius: 4px;
+    }
+    #training-plan-concept .training-cycle-track .training-cycle-current {
+      background: light-dark(#2979ff, #5890ff);
+    }
+    #training-plan-concept .training-cycle-labels {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      color: light-dark(#77777c, #9f9fa4);
+      font-size: calc(var(--font-size-base) * .72);
+    }
+    #training-plan-concept .training-footer {
+      margin: 22px 2px 0;
+      color: light-dark(#77777c, #9f9fa4);
+      font-size: calc(var(--font-size-base) * .72);
+      text-align: center;
+    }
+    @media (max-width: 370px) {
+      #training-plan-concept .training-body { padding-inline: 12px; }
+      #training-plan-concept .training-step { grid-template-columns: 29px minmax(0, 1fr); }
+      #training-plan-concept .training-dose { grid-column: 2; text-align: left; }
+      #training-plan-concept .training-day span { display: none; }
+    }
+  </style>
+
+  <article class="training-phone" aria-label="攀岩训练计划移动端页面概念稿">
+    <header class="training-top">
+      <p class="training-brand">12345 Training</p>
+      <div class="training-topline">
+        <div>
+          <h1>第 2 周</h1>
+          <p>力量建立 · 距考试约 12 周</p>
+        </div>
+        <div class="training-weekmark">W02</div>
+      </div>
+    </header>
+
+    <div class="training-body">
+      <section class="training-today">
+        <p class="training-kicker">今天 · 周一</p>
+        <div class="training-today-main">
+          <div class="training-today-copy">
+            <h2>最大力量</h2>
+            <p>峰值指力 + 拉力</p>
+          </div>
+          <span class="training-duration">110–130 分钟</span>
+        </div>
+      </section>
+
+      <div class="training-days" aria-label="本周四个训练日">
+        <div class="training-day training-current"><strong>周一</strong><span>最大力量</span></div>
+        <div class="training-day"><strong>周三</strong><span>力量耐力</span></div>
+        <div class="training-day"><strong>周五</strong><span>爆发抱石</span></div>
+        <div class="training-day"><strong>周日</strong><span>线路模拟</span></div>
+      </div>
+
+      <section>
+        <div class="training-section-title"><h2>今天的训练</h2><span>高强度日</span></div>
+        <div class="training-session">
+          <div class="training-step"><span class="training-step-number">01</span><div><span class="training-step-name">专项热身</span><span class="training-step-note">肩胛激活 · 递增悬挂 · V2–V4</span></div><span class="training-dose">20–25 分钟</span></div>
+          <div class="training-step"><span class="training-step-number">02</span><div><span class="training-step-name">20 mm 半扣</span><span class="training-step-note">组间休息 3 分钟 · RPE 8.5–9</span></div><span class="training-dose">5 × 10 秒</span></div>
+          <div class="training-step"><span class="training-step-number">03</span><div><span class="training-step-name">极限抱石</span><span class="training-step-note">V6–V8 短片段 · 尝试间休 3–5 分钟</span></div><span class="training-dose">4 个片段</span></div>
+          <div class="training-step"><span class="training-step-number">04</span><div><span class="training-step-name">负重引体</span><span class="training-step-note">动作完整 · 组间休息 3–4 分钟</span></div><span class="training-dose">5 × 3</span></div>
+          <div class="training-step"><span class="training-step-number">05</span><div><span class="training-step-name">单臂锁定</span><span class="training-step-note">90° / 120° · 左右同量</span></div><span class="training-dose">3 × 5 秒 / 侧</span></div>
+          <div class="training-step"><span class="training-step-number">06</span><div><span class="training-step-name">拮抗与收操</span><span class="training-step-note">俯卧撑 · 外旋 · 伸指</span></div><span class="training-dose">2–3 组</span></div>
+        </div>
+      </section>
+
+      <section class="training-week-focus">
+        <div class="training-section-title"><h2>本周主线</h2><span>W1–3 · 力量建立</span></div>
+        <div class="training-focus-row"><span>指力</span><strong>每周 2 次最大悬挂</strong></div>
+        <div class="training-focus-row"><span>抱石</span><strong>V6–V8 高质量短片段</strong></div>
+        <div class="training-focus-row"><span>线路</span><strong>拆解 5.12a–c 难点</strong></div>
+      </section>
+
+      <section class="training-cycle">
+        <div class="training-section-title"><h2>13 周周期位置</h2><span>当前：力量建立</span></div>
+        <div class="training-cycle-track" aria-label="13周周期：力量建立、减量、力量转化、减量、考试专项、高峰减量">
+          <span class="training-cycle-current"></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="training-cycle-labels"><span>力量建立</span><span>力量转化</span><span>考试专项</span><span>高峰减量</span></div>
+      </section>
+
+      <p class="training-footer">先看今天，再看本周，最后确认整个周期。</p>
+    </div>
+  </article>
+</div>
